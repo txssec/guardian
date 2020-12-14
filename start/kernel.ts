@@ -41,5 +41,6 @@ Server.middleware.register(['Adonis/Core/BodyParserMiddleware', 'App/Middleware/
 Server.middleware.registerNamed({
   is: 'App/Middleware/Is',
   auth: 'App/Middleware/Auth',
+  owner: 'App/Middleware/Owner',
   loginValidator: 'App/Validators/LoginValidator',
 })

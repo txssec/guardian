@@ -46,8 +46,9 @@ Route.group(() => {
 
     Route.get('/users', 'UserController.index').middleware('is:admin,manager')
     Route.get('/users/:id', 'UserController.show').middleware('is:admin,manager')
+    Route.put('/users/:id', 'UserController.update')
     Route.delete('/users/:id', 'UserController.delete')
-  }).middleware('auth')
+  }).middleware(['auth', 'owner'])
 
   Route.group(() => {
     Route.post('/login', 'AuthController.login')
