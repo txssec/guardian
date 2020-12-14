@@ -3,7 +3,6 @@ import UnauthorizedException from 'App/Exceptions/UnauthorizedException'
 import InternalServerException from 'App/Exceptions/InternalServerException'
 
 import { AuthContract } from '@ioc:Adonis/Addons/Auth'
-import { UserMailService } from './Auth/UserMailService'
 
 export class BaseService {
   private _user: User | undefined
