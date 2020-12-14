@@ -129,7 +129,13 @@ export class BaseRepository {
   }
 
   public async update(id: string, payload) {
-    return this.query().where('id', id).update(payload)
+    const model = await this.getOne(id)
+
+    Object.keys(payload).map((key) => {
+      model[key] = payload[key]
+    })
+
+    return model.save()
   }
 
   public async delete(id: string) {
