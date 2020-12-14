@@ -19,6 +19,10 @@ export class UserService extends BaseService {
     return user
   }
 
+  public async update(id: string, data: { name?: string; email?: string; password?: string }) {
+    return new UserRepository().update(id, data)
+  }
+
   public async delete(id: string) {
     const user = await new UserRepository().delete(id)
 
