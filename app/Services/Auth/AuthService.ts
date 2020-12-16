@@ -1,10 +1,11 @@
+import UniqueException from 'App/Exceptions/UniqueException'
 import NotFoundException from 'App/Exceptions/NotFoundException'
+import UnauthorizedException from 'App/Exceptions/UnauthorizedException'
 
+import { UserToken } from 'App/Models'
 import { BaseService } from 'App/Services'
 import { UserMailService } from './UserMailService'
 import { UserRepository } from 'App/Repositories/UserRepository'
-import UnauthorizedException from 'App/Exceptions/UnauthorizedException'
-import { UserToken } from 'App/Models/UserToken'
 
 export class AuthService extends BaseService {
   public async me() {
@@ -18,6 +19,17 @@ export class AuthService extends BaseService {
   }
 
   public async register(data: any) {
+    const email = await new UserRepository().getOne(null, {
+      where: [
+        { key: 'email', value: data.email },
+        { key: 'applicationId', value: data.applicationId },
+      ],
+    })
+
+    if (email) {
+      throw new UniqueException('This email already exists in this application!')
+    }
+
     const user = await new UserRepository().create(data)
 
     await new UserMailService().confirmToken(user)
