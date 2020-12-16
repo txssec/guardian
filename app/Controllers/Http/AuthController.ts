@@ -16,13 +16,15 @@ export default class AuthController extends ApiController {
     return this.response(response).withOne(user)
   }
 
-  public async register({ request, response }: HttpContextContract) {
+  public async register({ request, response, application }: HttpContextContract) {
     const data = await this.request(request).validate(RegisterValidator)
 
     const user = await new AuthService().register({
       name: data.name,
       email: data.email,
       password: data.password,
+      applicationId: application.id,
+      fromToken: application.token,
     })
 
     return this.response(response).withCreated(user)
