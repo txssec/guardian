@@ -13,7 +13,6 @@
 |
 */
 
-import { Exception } from '@poppinss/utils'
 import Config from '@ioc:Adonis/Core/Config'
 import Logger from '@ioc:Adonis/Core/Logger'
 import { ResponseContract } from '@ioc:Adonis/Core/Response'
@@ -35,14 +34,15 @@ export default class ExceptionHandler extends HttpExceptionHandler {
   }
 
   public async response(error, response: ResponseContract) {
-    response.status(error.status).json({
+    return response.status(error.status).json({
+      status: error.status,
+      method: response.request.method,
       code: error.code,
       path: response.request.url,
-      status: error.status,
       timestamp: new Date().getTime(),
       error: {
         name: error.name,
-        help: error.help,
+        help: 'HttpExceptionHandler',
         message: error.message.split(': ')[1],
         messages: error.messages,
       },
@@ -50,9 +50,10 @@ export default class ExceptionHandler extends HttpExceptionHandler {
   }
 
   public async internalError(response: ResponseContract) {
-    response.status(500).json({
+    return response.status(500).json({
       code: 'E_INTERNAL_SERVER_ERROR',
       path: response.request.url,
+      method: response.request.method,
       status: 500,
       timestamp: new Date().getTime(),
       error: {
@@ -63,12 +64,17 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     })
   }
 
-  public async handle(error: Exception, ctx: HttpContextContract) {
-    if (Config.get('app.enviroment') !== 'production') return this.response(error, ctx.response)
+  public async handle(error, ctx: HttpContextContract) {
+    if (Config.get('app.enviroment') !== 'production') {
+      return this.response(error, ctx.response)
+    }
 
     const statusCode = this.acceptedCodes.find((code) => code === error.code)
 
-    if (statusCode) return this.response(error, ctx.response)
-    else return this.internalError(ctx.response)
+    if (statusCode) {
+      return this.response(error, ctx.response)
+    } else {
+      return this.internalError(ctx.response)
+    }
   }
 }
