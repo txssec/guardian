@@ -13,7 +13,6 @@ import {
 } from '@ioc:Adonis/Lucid/Orm'
 
 import Hash from '@ioc:Adonis/Core/Hash'
-import { Attachment } from './Attachment'
 import { UserToken } from './UserToken'
 import { Role } from './Role'
 import { Permission } from './Permission'
@@ -24,6 +23,9 @@ export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: string
 
+  @column({ columnName: 'application_id' })
+  public applicationId: string
+
   @column()
   public name: string
 
@@ -33,14 +35,14 @@ export default class User extends BaseModel {
   @column()
   public token: string
 
+  @column({ columnName: 'from_token' })
+  public fromToken: string
+
   @column({ serializeAs: null })
   public password: string
 
   @column()
   public status: 'pendent' | 'approved' | 'reproved' | 'deleted'
-
-  @column()
-  public rememberMeToken?: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -50,9 +52,6 @@ export default class User extends BaseModel {
 
   @column.dateTime()
   public deletedAt: DateTime
-
-  @hasMany(() => Attachment)
-  public attachments: HasMany<typeof Attachment>
 
   @hasMany(() => UserToken)
   public userTokens: HasMany<typeof UserToken>
