@@ -7,7 +7,8 @@ export default class UserTokens extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary()
 
-      table.uuid('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
+      table.uuid('user_id').unsigned().index()
+      table.foreign('user_id').references('id').inTable('users').onDelete('CASCADE')
 
       table.string('name').notNullable()
       table.string('ip').nullable()

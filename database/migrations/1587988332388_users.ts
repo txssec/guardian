@@ -6,9 +6,13 @@ export default class UsersSchema extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary()
+
+      table.uuid('application_id').notNullable()
+
       table.string('name', 60).notNullable()
-      table.string('email', 255).notNullable().unique()
+      table.string('email', 255).notNullable()
       table.string('token', 255).notNullable().unique()
+      table.string('from_token', 255).notNullable()
       table.string('password', 180).notNullable()
       table.enu('status', ['pendent', 'approved', 'reproved', 'deleted']).defaultTo('pendent')
       table.timestamps(true)
