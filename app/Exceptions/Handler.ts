@@ -27,6 +27,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     'E_INVALID_AUTH_PASSWORD',
     'E_NOT_FOUND',
     'E_UNAUTHORIZED',
+    'E_UNIQUE',
   ]
 
   constructor() {
