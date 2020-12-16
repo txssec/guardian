@@ -4,16 +4,18 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { UpdateValidator } from 'App/Validators/Auth'
 
 export default class UserController extends ApiController {
-  public async index({ request, response, auth, pagination }: HttpContextContract) {
+  public async index({ request, response, auth, pagination, application }: HttpContextContract) {
     const data = request.only(['where', 'orderBy', 'includes'])
+    data.where.push({ key: 'applicationId', value: application.id })
 
     const users = await new UserService().setGuard(auth).getAll(pagination, data)
 
     return this.response(response).withCollection(users.toJSON())
   }
 
-  public async show({ request, response, params, auth }: HttpContextContract) {
+  public async show({ request, response, params, auth, application }: HttpContextContract) {
     const data = request.only(['where', 'orderBy', 'includes'])
+    data.where.push({ key: 'applicationId', value: application.id })
 
     const user = await new UserService().setGuard(auth).getOne(params.id, data)
 
