@@ -6,10 +6,7 @@ export class RegisterValidator {
 
   public schema = schema.create({
     name: schema.string(),
-    email: schema.string({}, [
-      rules.email({ sanitize: true }),
-      rules.unique({ table: 'users', column: 'email' }),
-    ]),
+    email: schema.string({}, [rules.email({ sanitize: true })]),
     password: schema.string(),
   })
 
