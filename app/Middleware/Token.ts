@@ -16,7 +16,7 @@ export default class Token {
 
     try {
       application = await axios.get(
-        `https://txssec-application.herokuapp.com/app/v0.0.2/applications/${token}`
+        `https://txssec-application.herokuapp.com/app/v0.0.3/applications/${token}`
       )
     } catch (error) {
       throw new NotFoundException('Application not found')

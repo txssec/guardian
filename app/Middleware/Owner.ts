@@ -12,16 +12,8 @@ export default class Owner {
     await user.preload('roles')
     const isAuthorized = user.roles.find((role) => role.slug === 'admin' || 'manager')
 
-    if (isAuthorized) {
-      return next()
-    }
-
-    if (ctx.request.method() === 'PUT' && ctx.params) {
-      const id = ctx.params.id
-
-      if (id !== user.id) {
-        throw new UnauthorizedException('User is not authorized to update resources of other user')
-      }
+    if (!isAuthorized && user.id !== ctx.params.id) {
+      throw new UnauthorizedException('User is not authorized to manage other user')
     }
 
     await next()

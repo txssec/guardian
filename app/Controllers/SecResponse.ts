@@ -20,6 +20,7 @@ export class SecResponse {
     return this.response.status(200).json({
       code: 'ONE',
       path: this.response.request.url,
+      method: this.response.request.method,
       status: 200,
       data: payload,
     })
@@ -29,6 +30,7 @@ export class SecResponse {
     return this.response.status(200).json({
       code: 'MESSAGE',
       path: this.response.request.url,
+      method: this.response.request.method,
       status: 200,
       message,
     })
@@ -38,6 +40,7 @@ export class SecResponse {
     return this.response.status(204).json({
       code: 'NONE',
       path: this.response.request.url,
+      method: this.response.request.method,
       status: 204,
     })
   }
@@ -46,6 +49,7 @@ export class SecResponse {
     return this.response.status(201).json({
       code: 'CREATED',
       path: this.response.request.url,
+      method: this.response.request.method,
       status: 201,
       data: payload,
     })
@@ -55,6 +59,7 @@ export class SecResponse {
     return this.response.status(200).json({
       code: 'COLLECTION',
       path: this.response.request.url,
+      method: this.response.request.method,
       status: 200,
       data: payload.data,
       pagination: payload.meta,
@@ -65,6 +70,7 @@ export class SecResponse {
     return this.response.status(200).json({
       code: 'SOFT_DELETED',
       path: this.response.request.url,
+      method: this.response.request.method,
       status: 200,
       data: {
         message: `[${payload}] Has been deleted`,
